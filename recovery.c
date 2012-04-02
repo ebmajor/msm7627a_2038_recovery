@@ -1206,13 +1206,13 @@ int start_deltaupdate(char* diff_pkg_path_name)
         ui_print("Delta update failed.\n");
         finish_recovery("--send_intent=DELTA_UPDATE_FAILED");
         set_deltaupdate_status(DELTA_UPDATE_FAILED, DELTA_UPDATE_FAILED_410);
-        reset_fota_cookie_mtd();
+        reset_fota_cookie();
         return -1;
     }
 
     // modem update starts only if android update is successful
     status = start_delta_modemupdate(diff_pkg_path_name);
-    reset_fota_cookie_mtd();
+    reset_fota_cookie();
 
     // modem update is complete. Handle update result.
     if (status != DELTA_UPDATE_SUCCESS_200)
@@ -1279,7 +1279,7 @@ static int handle_deltaupdate_status(void)
     {
     case START_DELTA_UPDATE:
           set_deltaupdate_status(DELTA_UPDATE_IN_PROGRESS, 0);
-          set_fota_cookie_mtd();
+          set_fota_cookie();
           break;
 
     case DELTA_UPDATE_IN_PROGRESS:
@@ -1290,7 +1290,7 @@ static int handle_deltaupdate_status(void)
           LOGI("No update set\n");
           if (MAX_NUM_UPDATE_RECOVERY < get_deltaupdate_recoverycount()){
              reset_deltaupdate_recovery_bootmessage();
-             reset_fota_cookie_mtd();
+             reset_fota_cookie();
           }
           return EXIT_SUCCESS;
     }
